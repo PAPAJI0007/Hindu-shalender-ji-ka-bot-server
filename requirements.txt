@@ -1,5 +1,5 @@
 fastapi==0.103.2
-fbchat-asyncio==2.0.0a3
+fbchat-asyncio
 websockets==10.4
 youtube-dl==2023.7.6
 uvicorn==0.23.2

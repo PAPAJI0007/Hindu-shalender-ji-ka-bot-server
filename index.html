@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shalender Hindu Ji Ka Bot Control Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        .status {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .online { background: #4CAF50; color: white; }
+        .offline { background: #f44336; color: white; }
+        .connecting { background: #ff9800; color: white; }
+        .server-connected { background: #2196F3; color: white; }
+        .panel {
+            background: #2d2d2d;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #0b7dda;
+            transform: scale(1.02);
+        }
+        button:disabled {
+            background: #555555;
+            cursor: not-allowed;
+        }
+        input, select, textarea {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+            border: 1px solid #444;
+            border-radius: 4px;
+            background: #333;
+            color: white;
+        }
+        .log {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #444;
+            padding: 10px;
+            margin-top: 20px;
+            font-family: monospace;
+            background: #222;
+            color: #00ff00;
+            border-radius: 4px;
+        }
+        small {
+            color: #888;
+            font-size: 12px;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #444;
+        }
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background: #333;
+            margin-right: 5px;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s;
+        }
+        .tab.active {
+            background: #2196F3;
+            color: white;
+        }
+        h1, h3 {
+            color: #2196F3;
+        }
+        .command-list {
+            background: #333;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        .command {
+            margin: 5px 0;
+            padding: 8px;
+            background: #444;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔥 Shalender Hindu Ji Ka Bot Control Panel 🔥</h1>
+    
+    <div class="status connecting" id="status">
+        Status: Connecting to server...
+    </div>
+    
+    <div class="panel">
+        <div class="tabs">
+            <div class="tab active" data-tab="main">Main</div>
+            <div class="tab" data-tab="abuse">Abuse System</div>
+            <div class="tab" data-tab="settings">Settings</div>
+            <div class="tab" data-tab="commands">Commands</div>
+        </div>
+        
+        <div id="main-tab" class="tab-content active">
+            <div>
+                <textarea id="cookie-content" placeholder="Paste your cookie JSON here (e.g., {\"c_user\": \"...\", \"xs\": \"...\"})" rows="4"></textarea>
+                <small>Paste your cookie JSON (extract from browser)</small>
+            </div>
+            
+            <div>
+                <input type="text" id="prefix" value="!" placeholder="Command prefix">
+            </div>
+            
+            <div>
+                <input type="text" id="admin-id" placeholder="Admin Facebook ID" value="">
+            </div>
+            
+            <button id="start-btn">Start Bot</button>
+            <button id="stop-btn" disabled>Stop Bot</button>
+        </div>
+        
+        <div id="abuse-tab" class="tab-content">
+            <div>
+                <label for="abuse-file">Abuse Messages File</label>
+                <input type="file" id="abuse-file" accept=".txt">
+                <small>Upload abuse.txt file with messages (one per line)</small>
+            </div>
+            <button id="upload-abuse">Upload Abuse File</button>
+        </div>
+        
+        <div id="settings-tab" class="tab-content">
+            <div>
+                <label>
+                    <input type="checkbox" id="auto-spam">
+                    Auto Accept Spam Messages
+                </label>
+            </div>
+            
+            <div>
+                <label>
+                    <input type="checkbox" id="auto-message">
+                    Auto Accept Message Requests
+                </label>
+            </div>
+            
+            <button id="save-settings">Save Settings</button>
+        </div>
+        
+        <div id="commands-tab" class="tab-content">
+            <h3>Available Commands</h3>
+            <div class="command-list">
+                <div class="command">!help - Show all commands</div>
+                <div class="class="command">!groupnamelock on/off &lt;name&gt; - Lock/unlock group name</div>
+                <div class="command">!nicknamelock on/off &lt;nickname&gt; - Lock/unlock all nicknames</div>
+                <div class="command">!tid - Get group ID</div>
+                <div class="command">!uid - Get your ID</div>
+                <div class="command">!uid @mention - Get mentioned user's ID</div>
+                <div class="command">!info @mention - Get user information</div>
+                <div class="command">!groupinfo - Get group information</div>
+                <div class="command">!antiout on/off - Toggle anti-out feature</div>
+                <div class="command">!send sticker start/stop - Sticker spam</div>
+                <div class="command">!autospam accept - Auto accept spam messages</div>
+                <div class="command">!automessage accept - Auto accept message requests</div>
+                <div class="command">!loder target on &lt;time&gt; @user - Target a user with timer</div>
+                <div class="command">!loder stop - Stop targeting</div>
+                <div class="command">!autoconvo on/off &lt;time&gt; - Toggle auto conversation with timer</div>
+                <div class="command">!pair - Pair two random group members</div>
+                <div class="command">!music &lt;song name&gt; - Download music from YouTube</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="panel">
+        <h3>Bot Logs</h3>
+        <div class="log" id="log-container"></div>
+    </div>
+
+    <script>
+        const logContainer = document.getElementById('log-container');
+        const statusDiv = document.getElementById('status');
+        const startBtn = document.getElementById('start-btn');
+        const stopBtn = document.getElementById('stop-btn');
+        const uploadAbuseBtn = document.getElementById('upload-abuse');
+        const saveSettingsBtn = document.getElementById('save-settings');
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const autoSpamCheckbox = document.getElementById('auto-spam');
+        const autoMessageCheckbox = document.getElementById('auto-message');
+
+        function addLog(message, type = 'info') {
+            const logEntry = document.createElement('div');
+            logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+            });
+        });
+
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const socket = new WebSocket(`${protocol}//${window.location.host}/ws`);
+
+        socket.onopen = () => {
+            addLog('Connected to bot server');
+            statusDiv.className = 'status server-connected';
+            statusDiv.textContent = 'Status: Connected to Server';
+        };
+
+        socket.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                if (data.type === 'log') {
+                    addLog(data.message);
+                } else if (data.type === 'status') {
+                    statusDiv.className = data.running ? 'status online' : 'status server-connected';
+                    statusDiv.textContent = `Status: ${data.running ? 'Online' : 'Connected to Server'}`;
+                    startBtn.disabled = data.running;
+                    stopBtn.disabled = !data.running;
+                } else if (data.type === 'settings') {
+                    autoSpamCheckbox.checked = data.autoSpamAccept;
+                    autoMessageCheckbox.checked = data.autoMessageAccept;
+                }
+            } catch (e) {
+                addLog(`Error parsing message: {e.message}`);
+            }
+        };
+
+        socket.onclose = () => {
+            addLog('Disconnected from bot server');
+            statusDiv.className = 'status offline';
+            statusDiv.textContent = 'Status: Disconnected';
+        };
+
+        socket.onerror = (error) => {
+            addLog(`WebSocket error: {error.message || 'Unknown error'}`);
+            statusDiv.className = 'status offline';
+            statusDiv.textContent = 'Status: Connection Error';
+        };
+
+        startBtn.addEventListener('click', () => {
+            const cookieContent = document.getElementById('cookie-content').value.trim();
+            if (!cookieContent) {
+                addLog('Please paste a cookie JSON');
+                return;
+            }
+
+            const prefix = document.getElementById('prefix').value.trim();
+            const adminId = document.getElementById('admin-id').value.trim();
+
+            socket.send(JSON.stringify({
+                type: 'start',
+                cookieContent,
+                prefix,
+                adminId
+            }));
+        });
+
+        stopBtn.addEventListener('click', () => {
+            socket.send(JSON.stringify({ type: 'stop' }));
+        });
+
+        uploadAbuseBtn.addEventListener('click', () => {
+            const fileInput = document.getElementById('abuse-file');
+            if (fileInput.files.length === 0) {
+                addLog('Please select an abuse file');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = (event) => {
+                socket.send(JSON.stringify({
+                    type: 'uploadAbuse',
+                    content: event.target.result
+                }));
+            };
+
+            reader.readAsText(file);
+        });
+
+        saveSettingsBtn.addEventListener('click', () => {
+            socket.send(JSON.stringify({
+                type: 'saveSettings',
+                autoSpamAccept: autoSpamCheckbox.checked,
+                autoMessageAccept: autoMessageCheckbox.checked
+            }));
+        });
+
+        addLog('Control panel ready');
+    </script>
+</body>
+</html>
